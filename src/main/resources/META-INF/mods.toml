@@ -1,0 +1,42 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="GNU GPL v3.0"
+[[mods]]
+modId="rotp_extra_dg"
+version="${file.jarVersion}"
+displayName="RotP Extra Stands"
+logoFile="logo.png"
+credits='''
+
+  Stand sound effects:
+    LAMBIRNO - https://www.youtube.com/channel/UCimScfxJm09SNUiWNc0LldQ
+    IShowPucci - https://www.youtube.com/channel/UCpcB9jWLAbPl3GsLbgdp1lQ
+    Jojo's Bizarre Sound Design - https://www.youtube.com/channel/UC1D64Jo93pD9pF_tfv_RYMQ
+    Passione Sound - https://www.youtube.com/channel/UC_Tm3UQEmNLEChxcfk5yqFw
+    jokesuke - https://www.youtube.com/channel/UCa2j2AWFUvJAFTuN39mPcKA
+  Voice lines from the game All Star Battle R: https://sounds-resource.com/
+  Translation files:
+    Chinese Simplified: Hollow Man
+'''
+authors="DanielGamer321, StandoByte"
+description='''
+An addon for Ripples of the Past mod, adding 3 new Stands.
+'''
+[[dependencies.rotp_extra_dg]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.rotp_extra_dg]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.rotp_extra_dg]]
+    modId="jojo"
+    mandatory=true
+    versionRange="[0.2.2,0.3)"
+    ordering="AFTER"
+    side="BOTH"
