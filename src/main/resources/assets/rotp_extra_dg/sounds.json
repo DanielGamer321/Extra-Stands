@@ -1,0 +1,103 @@
+{
+  "okuyasu_the_hand": {
+    "subtitle": "rotp_extra_dg.subtitle.the_hand_name",
+    "sounds": [ "rotp_extra_dg:stand_user/okuyasu_the_hand", "rotp_extra_dg:stand_user/okuyasu_the_hand_2" ]
+  },
+  "the_hand_summon": {
+    "subtitle": "jojo.subtitle.stand_summon",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_summon" ]
+  },
+  "the_hand_punch_light": {
+    "subtitle": "jojo.subtitle.stand_attack_light",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_punch_light", "rotp_extra_dg:stand/the_hand_punch_light_2" ]
+  },
+  "the_hand_punch_barrage": {
+    "subtitle": "jojo.subtitle.stand_attack_light",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_punch_light", "rotp_extra_dg:stand/the_hand_punch_light_2" ]
+  },
+  "the_hand_punch_heavy": {
+    "subtitle": "jojo.subtitle.stand_attack_strong",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_punch_light", "rotp_extra_dg:stand/the_hand_punch_light_2" ]
+  },
+  "the_hand_kick_heavy": {
+    "subtitle": "jojo.subtitle.stand_attack_strong",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_kick_heavy" ]
+  },
+  "the_hand_erase": {
+    "subtitle": "rotp_extra_dg.subtitle.erasure",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_erase" ]
+  },
+  "the_hand_erasure_barrage": {
+    "subtitle": "rotp_extra_dg.subtitle.erasure",
+    "sounds": [ "rotp_extra_dg:stand/the_hand_erasure_barrage" ]
+  },
+  "sale_kraft_work": {
+    "subtitle": "rotp_extra_dg.subtitle.kraft_work_name",
+    "sounds": [ "rotp_extra_dg:stand_user/sale_kraft_work" ]
+  },
+  "kraft_work_blocks_a_projectile": {
+    "subtitle": "rotp_extra_dg.subtitle.kraft_work_blocks_a_projectile",
+    "sounds": [ "rotp_extra_dg:stand/kraft_work_blocks_a_projectile" ]
+  },
+  "kraft_work_giving_kinetic_energy": {
+    "subtitle": "rotp_extra_dg.subtitle.kraft_work_giving_kinetic_energy",
+    "sounds": [ "rotp_extra_dg:stand/kraft_work_giving_kinetic_energy", "rotp_extra_dg:stand/kraft_work_giving_kinetic_energy_2" ]
+  },
+  "kraft_work_released_projectile": {
+    "subtitle": "jojo.subtitle.shot",
+    "sounds": [ "rotp_extra_dg:stand/kraft_work_released_projectile", "rotp_extra_dg:stand/kraft_work_released_projectile_2" ]
+  },
+  "jolyne_stone_free": {
+    "subtitle": "rotp_extra_dg.subtitle.stone_free_name",
+    "sounds": [ "rotp_extra_dg:stand_user/jolyne_stone_free", "rotp_extra_dg:stand_user/jolyne_stone_free_2", "rotp_extra_dg:stand_user/jolyne_stone_free_3", "rotp_extra_dg:stand_user/jolyne_stone_free_4", "rotp_extra_dg:stand_user/jolyne_stone_free_5" ]
+  },
+  "stone_free_summon": {
+    "subtitle": "jojo.subtitle.stand_summon",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_summon" ]
+  },
+  "stone_free_punch_light": {
+    "subtitle": "jojo.subtitle.stand_attack_light",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_punch_light" ]
+  },
+  "stone_free_punch_barrage": {
+    "subtitle": "jojo.subtitle.stand_attack_light",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_punch_light" ]
+  },
+  "stone_free_punch_heavy": {
+    "subtitle": "jojo.subtitle.stand_attack_strong",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_punch_heavy" ]
+  },
+  "stone_free_ora": {
+    "subtitle": "jojo.subtitle.ora",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_ora", "rotp_extra_dg:stand/stone_free_ora_2", "rotp_extra_dg:stand/stone_free_ora_3", "rotp_extra_dg:stand/stone_free_ora_4" ]
+  },
+  "stone_free_ora_long": {
+    "subtitle": "jojo.subtitle.ora",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_ora_long", "rotp_extra_dg:stand/stone_free_ora_long_2" ]
+  },
+  "stone_free_ora_ora_ora": {
+    "subtitle": "jojo.subtitle.ora_ora_ora",
+    "sounds": [ "rotp_extra_dg:stand/stone_free_ora_ora_ora", "rotp_extra_dg:stand/stone_free_ora_ora_ora_2", "rotp_extra_dg:stand/stone_free_ora_ora_ora_3" ]
+  },
+  "stone_free_string": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_string", "rotp_extra_dg:stand/stone_free_string_2", "rotp_extra_dg:stand/stone_free_string_3" ]
+  },
+  "stone_free_grapple_catch": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_catch", "rotp_sf:stand/stone_free_barrier_placed", "rotp_extra_dg:stand/stone_free_barrier_placed_2" ]
+  },
+  "stone_free_closing_wound": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_string" ]
+  },
+  "stone_free_closed_wound": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_barrier_placed" ]
+  },
+  "stone_free_barrier_placed": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_barrier_placed", "rotp_extra_dg:stand/stone_free_barrier_placed_2" ]
+  },
+  "stone_free_barrier_ripped": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_barrier_ripped" ]
+  },
+  "stone_free_mobius_strip": {
+    "sounds": [ "rotp_extra_dg:stand/stone_free_mobius_strip" ]
+  }
+}

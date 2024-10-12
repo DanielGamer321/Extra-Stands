@@ -1,0 +1,16 @@
+{
+  "skins": {
+    "rotp_extra_dg:the_hand": {
+      "stand_type": "rotp_extra_dg:the_hand",
+      "color" : "0xEDEEF0"
+    },
+    "rotp_extra_dg:kraft_work": {
+      "stand_type": "rotp_extra_dg:kraft_work",
+      "color" : "0xA4C686"
+    },
+    "rotp_extra_dg:stone_free": {
+      "stand_type": "rotp_extra_dg:stone_free",
+      "color" : "0x80DEF7"
+    }
+  }
+}
