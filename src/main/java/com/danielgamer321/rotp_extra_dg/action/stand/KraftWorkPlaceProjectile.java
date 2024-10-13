@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.entity.damaging.projectile.TommyGunBulletEntity;
+import com.github.standobyte.jojo.entity.damaging.projectile.MolotovEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.BladeHatEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.KnifeEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
@@ -35,6 +36,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
@@ -65,11 +67,13 @@ public class KraftWorkPlaceProjectile extends StandAction {
         return super.checkSpecificConditions(user, power, target);
     }
 
-    public static boolean projectileList(ItemStack item) {
+    public static boolean projectileList(ItemStack item, LivingEntity user) {
+        ItemStack mainItem = user.getMainHandItem();
         return
                 item.getItem() instanceof ArrowItem ||
                 item.getItem() instanceof ThrowablePotionItem ||
                 item.getItem() instanceof KnifeItem ||
+                (item.getItem() == ModItems.MOLOTOV.get() && mainItem.getItem() == Items.FLINT_AND_STEEL) ||
                 item.getItem() == ModItems.BLADE_HAT.get() ||
                 item.getItem() == Items.TRIDENT ||
                 item.getItem() == Items.IRON_NUGGET ||
@@ -256,9 +260,10 @@ public class KraftWorkPlaceProjectile extends StandAction {
 
     public static void placeProjectile(World world, LivingEntity user, LivingEntity itemOwner, ItemStack item, IStandPower power) {
         Vector3d userView = itemOwner.getViewVector(1.0F);
+        ItemStack mainItem = user.getMainHandItem();
         int itemsToThrow = 1;
         String lock_id = String.valueOf(user.getUUID());
-        if (projectileList(item)) {
+        if (projectileList(item, itemOwner)) {
             Item proItem = item.getItem();
             if (proItem instanceof ArrowItem) {
                 ArrowItem arrowItem = (ArrowItem) proItem;
@@ -325,6 +330,26 @@ public class KraftWorkPlaceProjectile extends StandAction {
                 int cooldown = itemsToThrow * 3;
                 if (itemOwner instanceof PlayerEntity) {
                     ((PlayerEntity)itemOwner).getCooldowns().addCooldown(proItem, cooldown);
+                }
+            }
+            if (proItem == ModItems.MOLOTOV.get() && mainItem.getItem() == Items.FLINT_AND_STEEL) {
+                MolotovEntity molotov = new MolotovEntity(world, itemOwner);
+                molotov.setItem(item);
+                molotov.shootFromRotation(itemOwner, itemOwner.xRot, itemOwner.yRot, 0.0F, 0.75F, 1.0F);
+                TagServerSide(molotov, lock_id, true);
+                world.addFreshEntity(molotov);
+                setCanUpdateServerSide(molotov, false);
+                setPositionLockingServerSide(molotov, true);
+                if (itemOwner instanceof PlayerEntity) {
+                    ((PlayerEntity)itemOwner).awardStat(Stats.ITEM_USED.get(proItem));
+                    ((PlayerEntity)itemOwner).getCooldowns().addCooldown(proItem, 3);
+                }
+                mainItem.hurtAndBreak(1, itemOwner, (PUser) -> {
+                    PUser.broadcastBreakEvent(itemOwner.getUsedItemHand());
+                });
+
+                if (!itemOwner.isSilent()) {
+                    itemOwner.playSound(ModSounds.MOLOTOV_THROW.get(), 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
                 }
             }
             if (proItem == ModItems.BLADE_HAT.get()) {
@@ -597,7 +622,7 @@ public class KraftWorkPlaceProjectile extends StandAction {
 
     private boolean isNotAProjectile(IStandPower power) {
         ItemStack item = power.getUser().getOffhandItem();
-        return power.getUser() != null && !projectileList(item);
+        return power.getUser() != null && !projectileList(item, power.getUser());
     }
 
 
