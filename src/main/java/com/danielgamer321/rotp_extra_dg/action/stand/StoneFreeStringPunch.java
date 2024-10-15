@@ -8,6 +8,7 @@ import com.github.standobyte.jojo.action.stand.StandEntityHeavyAttack;
 import com.github.standobyte.jojo.action.stand.punch.StandEntityPunch;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
+import com.github.standobyte.jojo.entity.stand.StandRelativeOffset;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.StandEntityDamageSource;
 
@@ -28,10 +29,8 @@ public class StoneFreeStringPunch extends StoneFreeHeavyPunch {
     }
 
     @Override
-    public StandEntityPunch punchEntity(StandEntity stand, Entity target, StandEntityDamageSource dmgSource) {
-        return super.punchEntity(stand, target, dmgSource)
-                .addKnockback(2);
-
+    public double getSlideDistance() {
+        return 1.5;
     }
 
     @Override
@@ -41,6 +40,18 @@ public class StoneFreeStringPunch extends StoneFreeHeavyPunch {
             StoneFreeEntity stoneFree = (StoneFreeEntity) standEntity;
             stoneFree.setCapture(true);
         }
+    }
+
+    @Override
+    public StandEntityPunch punchEntity(StandEntity stand, Entity target, StandEntityDamageSource dmgSource) {
+        return super.punchEntity(stand, target, dmgSource)
+                .addKnockback(2);
+
+    }
+
+    @Override
+    public StandRelativeOffset getOffsetFromUser(IStandPower standPower, StandEntity standEntity, StandEntityTask task) {
+        return StandRelativeOffset.noYOffset(0, 0.5);
     }
 
     @Override
