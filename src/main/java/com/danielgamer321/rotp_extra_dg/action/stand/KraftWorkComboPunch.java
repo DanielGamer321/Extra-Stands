@@ -1,6 +1,5 @@
 package com.danielgamer321.rotp_extra_dg.action.stand;
 
-import com.github.standobyte.jojo.action.stand.MagiciansRedRedBind;
 import com.github.standobyte.jojo.action.stand.punch.StandEntityPunch;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
@@ -19,7 +18,7 @@ public class KraftWorkComboPunch extends KraftWorkHeavyPunch {
         super(builder);
     }
 
-    private static final double SLIDE_DISTANCE = 2;
+    private static final double SLIDE_DISTANCE = 1.5;
     @Override
     public void standTickWindup(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         int ticksLeft = task.getTicksLeft();

@@ -33,6 +33,7 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
         if (!world.isClientSide()) {
             TheHandEntity thehand = (TheHandEntity) standEntity;
             thehand.setErase(true);
+            thehand.somethingWasErased(true);
         }
     }
 
@@ -42,13 +43,12 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
         TheHandEntity theHand = (TheHandEntity) userPower.getStandManifestation();
         List<ProjectileEntity> check = world.getEntitiesOfClass(ProjectileEntity.class, theHand.getBoundingBox().inflate(theHand.getAttributeValue(ForgeMod.REACH_DISTANCE.get())),
                 entity -> entity.isAlive() && !entity.isPickable());
-        theHand.somethingWasErased(task.getTarget().getType() != ActionTarget.TargetType.EMPTY || !check.isEmpty());
-//        if (task.getTarget().getType() == ActionTarget.TargetType.EMPTY && check.isEmpty()) {
-//            theHand.somethingWasErased(false);
-//        }
-//        else {
-//            theHand.somethingWasErased(true);
-//        }
+        if (task.getTarget().getType() == ActionTarget.TargetType.EMPTY && check.isEmpty()) {
+            theHand.somethingWasErased(false);
+        }
+        else {
+            theHand.somethingWasErased(true);
+        }
     }
 
     @Override
@@ -66,12 +66,10 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
         }
         else {
             LivingEntity entity = (LivingEntity) target;
-            if (entity.isAlive() && entity.getMaxHealth() >= 20) {
-                damage = entity.getMaxHealth() * 0.0115F;
-                return damage;
-            }
-            else if (entity.getMaxHealth() < 20) {
-                damage = StandStatFormulas.getBarrageHitDamage(16, stand.getPrecision());
+            if (entity.isAlive()) {
+                float size = (entity.getBbHeight() + entity.getBbWidth()) / 2.4F;
+                float eraseSpace = Math.max(size > 1.09 ? 1 - (size / 5) : 1 - (size - 1), 0.05F);
+                damage = entity.getMaxHealth() * ((size > 1.5 ? 0.0071875F : 0.0115F) * eraseSpace);
                 return damage;
             }
             return damage;
@@ -83,34 +81,24 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
     }
 
     @Override
-    public void standTickRecovery(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
-        super.standTickRecovery(world, standEntity, userPower, task);
-        boolean triggerEffect = task.getTicksLeft() <= 1;
-        if (!world.isClientSide() && triggerEffect) {
+    protected void onTaskStopped(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task, @Nullable StandEntityAction newAction) {
+        super.onTaskStopped(world, standEntity, standPower, task, newAction);
+        if (!world.isClientSide()) {
             TheHandEntity thehand = (TheHandEntity) standEntity;
             LivingEntity user = thehand.getUser();
             if (!thehand.targetErased() && user != null) {
                 LivingEntity entity = standEntity.isManuallyControlled() ? standEntity : user;
                 TheHandErase.Teleport(world, user, standEntity, entity);
             }
-            thehand.somethingWasErased(false);
-        }
-    }
-
-    @Override
-    protected void onTaskStopped(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task, @Nullable StandEntityAction newAction) {
-        super.onTaskStopped(world, standEntity, standPower, task, newAction);
-        if (!world.isClientSide()) {
-            TheHandEntity thehand = (TheHandEntity) standEntity;
             thehand.setErase(false);
         }
     }
 
     @Override
     public int getHoldDurationMax(IStandPower standPower) {
-        TheHandEntity theHand = (TheHandEntity) standPower.getStandManifestation();
-        if (standPower.getStandManifestation() instanceof StandEntity && theHand.targetErased()) {
-            return StandStatFormulas.getBarrageMaxDuration(((StandEntity) standPower.getStandManifestation()).getDurability()*0.3);
+        if (standPower.getStandManifestation() instanceof StandEntity) {
+            StandEntity standEntity = (StandEntity) standPower.getStandManifestation();
+            return StandStatFormulas.getBarrageMaxDuration(standEntity.getDurability() * 0.3);
         }
         return 20;
     }
@@ -121,7 +109,8 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
             super(stand, target, dmgSource);
             this
             .damage(getEraseDamage(target, stand))
-            .addFinisher(-0.005F);
+            .addFinisher(-0.005F)
+            .reduceKnockback(target instanceof StandEntity ? 0 : (float) stand.getAttackDamage() * 0.0075F);
         }
 
         public EraseEntityHit eraseHits(StandEntity stand, Entity target, int hits) {
@@ -137,7 +126,6 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
                 dmgSource.setBarrageHitsCount(barrageHits);
             }
             boolean hit = super.doHit(task);
-//            target.setDeltaMovement(target.getDeltaMovement().multiply(1, 0, 1));
             return hit;
         }
 
@@ -153,6 +141,6 @@ public class TheHandErasureBarrage extends StandEntityMeleeBarrage {
     @Override
     public int getCooldownAdditional(IStandPower power, int ticksHeld) {
         int cooldown = super.getCooldownAdditional(power, ticksHeld*2);
-        return cooldownFromHoldDuration(cooldown, power, ticksHeld);
+        return ticksHeld < 5 ? 24 : cooldownFromHoldDuration(cooldown, power, ticksHeld);
     }
 }

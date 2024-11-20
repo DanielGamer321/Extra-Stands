@@ -22,6 +22,7 @@ public class StoneFreeHeavyPunch extends StandEntityHeavyAttack {
     public double getSlideDistance() {
         return 2.75;
     }
+
     @Override
     public void standTickWindup(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         int ticksLeft = task.getTicksLeft();
