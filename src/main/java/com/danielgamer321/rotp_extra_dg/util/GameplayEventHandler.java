@@ -10,13 +10,16 @@ import com.danielgamer321.rotp_extra_dg.init.InitEffects;
 import com.danielgamer321.rotp_extra_dg.init.InitStands;
 import com.danielgamer321.rotp_extra_dg.power.impl.stand.type.KraftWorkStandType;
 import com.danielgamer321.rotp_extra_dg.power.impl.stand.type.StoneFreeStandType;
+import com.github.standobyte.jojo.entity.damaging.DamagingEntity;
+import com.github.standobyte.jojo.entity.damaging.projectile.ModdedProjectileEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.BladeHatEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.StandArrowEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
-
 import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.github.standobyte.jojo.util.mc.damage.*;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -61,6 +64,17 @@ import static com.danielgamer321.rotp_extra_dg.action.stand.KraftWorkPlaceProjec
 @EventBusSubscriber(modid = RotpExtraAddon.MOD_ID)
 public class GameplayEventHandler {
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingTick(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        IStandPower.getStandPowerOptional(entity).ifPresent(power -> {
+            if (IStandPower.getStandPowerOptional(entity).map(stand -> !stand.hasPower() ||
+                    stand.getType() != AddonStands.KRAFT_WORK.getStandType()).orElse(false)) {
+                releaseFromLock(entity);
+            }
+        });
+    }
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
@@ -69,12 +83,6 @@ public class GameplayEventHandler {
                 if (InitEffects.isLocked(player)) {
                     player.setSprinting(false);
                 }
-                IStandPower.getStandPowerOptional(player).ifPresent(power -> {
-                    if (IStandPower.getStandPowerOptional(player).map(stand -> !stand.hasPower() ||
-                            stand.getType() != AddonStands.KRAFT_WORK.getStandType()).orElse(false)) {
-                        releaseFromLock(player);
-                    }
-                });
                 break;
         }
     }
@@ -114,6 +122,16 @@ public class GameplayEventHandler {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void lockedBlockInteract(BlockEvent.BlockToolInteractEvent event) {
+        BlockPos eventPos = event.getPos();
+        List<KWBlockEntity> check = event.getWorld().getEntitiesOfClass(KWBlockEntity.class,
+                new AxisAlignedBB(Vector3d.atCenterOf(eventPos), Vector3d.atCenterOf(eventPos)));
+        if (event.isCancelable() && !check.isEmpty()) {
+            event.setCanceled(true);
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void releaseLock(LivingConversionEvent.Post event) {
         if (event.getOutcome() instanceof MobEntity) {
@@ -122,16 +140,6 @@ public class GameplayEventHandler {
             if (converted.isNoAi() && InitEffects.lockIA(pre) && !InitEffects.lockIA(converted)) {
                 converted.setNoAi(false);
             }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void lockedBlockInteract(BlockEvent.BlockToolInteractEvent event) {
-        BlockPos eventPos = event.getPos();
-        List<KWBlockEntity> check = event.getWorld().getEntitiesOfClass(KWBlockEntity.class,
-                new AxisAlignedBB(Vector3d.atCenterOf(eventPos), Vector3d.atCenterOf(eventPos)));
-        if (event.isCancelable() && !check.isEmpty()) {
-            event.setCanceled(true);
         }
     }
 
@@ -289,6 +297,30 @@ public class GameplayEventHandler {
     private static boolean isMelee(DamageSource dmgSource) {
         return !dmgSource.isExplosion() && !dmgSource.isFire() && !dmgSource.isMagic() &&
                 !dmgSource.isProjectile();
+    }
+
+    private static boolean AttackedByHisStand(Entity directEntity, LivingEntity standUser) {
+        if (directEntity instanceof StandEntity && ((StandEntity)directEntity).getUser() == standUser) {
+            return true;
+        }
+        else if (directEntity instanceof DamagingEntity && ((DamagingEntity)directEntity).getOwner().isAlive()){
+            LivingEntity owner = ((DamagingEntity)directEntity).getOwner();
+            return owner instanceof StandEntity && ((StandEntity) owner).getUser() == standUser;
+        }
+        return false;
+    }
+
+    private static void AttackedByHisStand(Entity directEntity, LivingEntity standUser, float amount) {
+        if (directEntity instanceof StandEntity && ((StandEntity)directEntity).getUser() == standUser) {
+            DamageUtil.hurtThroughInvulTicks(standUser, new StandEntityDamageSource("stand", directEntity, IStandPower.getStandPowerOptional(standUser).orElse(null)), amount);
+        }
+        else if (directEntity instanceof DamagingEntity && ((DamagingEntity)directEntity).getOwner().isAlive()){
+            LivingEntity owner = ((DamagingEntity)directEntity).getOwner();
+            if (owner instanceof StandEntity && ((StandEntity) owner).getUser() == standUser) {
+                ModdedProjectileEntity modded = ((ModdedProjectileEntity) directEntity);
+                DamageUtil.hurtThroughInvulTicks(standUser, new IndirectStandEntityDamageSource("arrow", ((DamagingEntity)directEntity), owner).setProjectile(), amount);
+            }
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
