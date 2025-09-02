@@ -6,6 +6,7 @@ import com.danielgamer321.rotp_extra_dg.client.render.entity.renderer.KWBlockRen
 import com.danielgamer321.rotp_extra_dg.client.render.entity.renderer.damaging.extending.*;
 import com.danielgamer321.rotp_extra_dg.client.render.entity.renderer.damaging.projectile.KWItemRenderer;
 import com.danielgamer321.rotp_extra_dg.client.render.entity.renderer.stand.*;
+import com.danielgamer321.rotp_extra_dg.client.ui.marker.AquaNecklaceMarker;
 import com.danielgamer321.rotp_extra_dg.client.ui.marker.StoneFreeBarrierDetectionMarker;
 import com.danielgamer321.rotp_extra_dg.init.AddonStands;
 import com.danielgamer321.rotp_extra_dg.init.InitEntities;
@@ -64,6 +65,7 @@ public class ClientInit {
             addLayers(skinMap.get("slim"), true);
             mc.getEntityRenderDispatcher().renderers.values().forEach(ClientInit::addLayersToEntities);
 
+            MarkerRenderer.Handler.addRenderer(new AquaNecklaceMarker(mc));
             MarkerRenderer.Handler.addRenderer(new StoneFreeBarrierDetectionMarker(mc));
 
             PlayerAnimationHandler.initAnimator();

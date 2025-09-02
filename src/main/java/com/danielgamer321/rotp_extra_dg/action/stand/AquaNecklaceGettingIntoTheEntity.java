@@ -7,14 +7,18 @@ import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.InputHandler;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class AquaNecklaceGettingIntoTheEntity extends StandEntityAction {
@@ -70,6 +74,15 @@ public class AquaNecklaceGettingIntoTheEntity extends StandEntityAction {
                 InitStands.AQUA_NECKLACE_LEAVE_THE_ENTITY.get().setCooldownOnUse(userPower);
             }
         }
+    }
+
+    @Override
+    public int getHoldDurationToFire(IStandPower power) {
+        RayTraceResult target = InputHandler.getInstance().mouseTarget;
+        ActionTarget actionTarget = ActionTarget.fromRayTraceResult(target);
+        Entity entity = actionTarget.getEntity();
+        return entity instanceof LivingEntity && (AquaNecklaceHeavyPunch.isASkeleton((LivingEntity) entity)) ?
+                10 : super.getHoldDurationToFire(power);
     }
 
     @Override
