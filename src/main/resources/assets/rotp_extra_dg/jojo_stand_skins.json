@@ -1,5 +1,13 @@
 {
   "skins": {
+    "rotp_extra_dg:aqua_necklace": {
+      "stand_type": "rotp_extra_dg:aqua_necklace",
+      "color" : "0xB7DAED"
+    },
+    "rotp_extra_dg:aqua_necklace_manga": {
+      "stand_type": "rotp_extra_dg:aqua_necklace",
+      "color" : "0x97D1F4"
+    },
     "rotp_extra_dg:the_hand": {
       "stand_type": "rotp_extra_dg:the_hand",
       "color" : "0xEDEEF0"

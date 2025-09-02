@@ -11,10 +11,6 @@
     "subtitle": "jojo.subtitle.stand_attack_light",
     "sounds": [ "rotp_extra_dg:stand/the_hand_punch_light", "rotp_extra_dg:stand/the_hand_punch_light_2" ]
   },
-  "the_hand_punch_barrage": {
-    "subtitle": "jojo.subtitle.stand_attack_light",
-    "sounds": [ "rotp_extra_dg:stand/the_hand_punch_light", "rotp_extra_dg:stand/the_hand_punch_light_2" ]
-  },
   "the_hand_punch_heavy": {
     "subtitle": "jojo.subtitle.stand_attack_strong",
     "sounds": [ "rotp_extra_dg:stand/the_hand_punch_light", "rotp_extra_dg:stand/the_hand_punch_light_2" ]
@@ -56,10 +52,6 @@
     "sounds": [ "rotp_extra_dg:stand/stone_free_summon" ]
   },
   "stone_free_punch_light": {
-    "subtitle": "jojo.subtitle.stand_attack_light",
-    "sounds": [ "rotp_extra_dg:stand/stone_free_punch_light" ]
-  },
-  "stone_free_punch_barrage": {
     "subtitle": "jojo.subtitle.stand_attack_light",
     "sounds": [ "rotp_extra_dg:stand/stone_free_punch_light" ]
   },

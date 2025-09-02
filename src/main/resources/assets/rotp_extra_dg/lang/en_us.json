@@ -1,4 +1,6 @@
 {
+  "effect.rotp_th.erased": "Erased & pasted",
+  "effect.rotp_extra_dg.surprise": "Surprise",
   "effect.rotp_extra_dg.locked_position": "Locked Position",
   "effect.rotp_extra_dg.locked_main_hand": "Locked Main Hand",
   "effect.rotp_extra_dg.locked_off_hand": "Locked Off Hand",
@@ -10,12 +12,29 @@
   "effect.rotp_extra_dg.string_decomposition": "String Shortage",
   "effect.rotp_extra_dg.mobius_strip": "Möbius strip",
 
+  "rotp_extra_dg.chat.message.potency": "Potency %s",
+
   "manage_projectiles.release_all": "Release all projectiles",
   "manage_projectiles.release_ready": "Release charged projectiles",
   "manage_projectiles.release_not_ready": "Release projectiles without charge",
   "manage_projectiles.release_ender_pearl": "Release ender pearls",
   "manage_projectiles.release_beneficial_items": "Release beneficial items",
   "manage_projectiles.exit_button": "Exit",
+
+  "entity.jojo.aqua_necklace": "Aqua Necklace",
+  "stand.rotp_extra_dg.aqua_necklace": "Aqua Necklace",
+  "action.rotp_extra_dg.aqua_necklace_punch": "Punch",
+  "action.rotp_extra_dg.aqua_necklace_punch_out": "Punch",
+  "action.rotp_extra_dg.aqua_necklace_heavy_punch": "Heavy Punch",
+  "action.rotp_extra_dg.aqua_necklace_brain_attack": "Brain attack",
+  "action.rotp_extra_dg.aqua_necklace_get_into_the_lungs": "Get into the lung",
+  "action.rotp_extra_dg.aqua_necklace_block": "Block",
+  "action.rotp_extra_dg.aqua_necklace_change_to_liquid": "Become liquid",
+  "action.rotp_extra_dg.aqua_necklace_change_to_liquid.undo": "Back to normal",
+  "action.rotp_extra_dg.aqua_necklace_change_to_gaseous": "Become vapor",
+  "action.rotp_extra_dg.aqua_necklace_change_to_gaseous.undo": "Back to normal",
+  "action.rotp_extra_dg.aqua_necklace_getting_into_entity": "Getting into the entity",
+  "action.rotp_extra_dg.aqua_necklace_leave_the_entity": "Leave the entity",
 
   "entity.jojo.the_hand": "The Hand",
   "stand.rotp_extra_dg.the_hand": "The Hand",

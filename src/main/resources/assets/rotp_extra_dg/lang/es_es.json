@@ -1,4 +1,5 @@
 {
+  "effect.rotp_extra_dg.surprise": "Sorpresa",
   "effect.rotp_extra_dg.locked_position": "Posición bloqueada",
   "effect.rotp_extra_dg.locked_main_hand": "Mano principal bloqueada",
   "effect.rotp_extra_dg.locked_off_hand": "Mano izquierda bloqueada",
@@ -10,6 +11,8 @@
   "effect.rotp_extra_dg.string_decomposition": "Escasez de hilos",
   "effect.rotp_extra_dg.mobius_strip": "Banda de Möbius",
 
+  "rotp_extra_dg.chat.message.potency": "Potencia %s",
+
   "manage_projectiles.release_all": "Libera todos los proyectiles",
   "manage_projectiles.release_ready": "Liberar proyectiles cargados",
   "manage_projectiles.release_not_ready": "Liberar proyectiles sin carga",
@@ -17,8 +20,20 @@
   "manage_projectiles.release_beneficial_items": "Liberar artículos beneficiosos",
   "manage_projectiles.exit_button": "Salir",
 
-  "entity.jojo.the_hand": "The Hand",
-  "stand.rotp_extra_dg.the_hand": "The Hand",
+  "entity.jojo.aqua_necklace": "Aqua Necklace",
+  "stand.rotp_extra_dg.aqua_necklace": "Aqua Necklace",
+  "action.rotp_extra_dg.aqua_necklace_punch": "Puñetazo",
+  "action.rotp_extra_dg.aqua_necklace_punch_out": "Puñetazo",
+  "action.rotp_extra_dg.aqua_necklace_heavy_punch": "Golpe fuerte",
+  "action.rotp_extra_dg.aqua_necklace_brain_attack": "Ataque al cerebro",
+  "action.rotp_extra_dg.aqua_necklace_block": "Bloquear",
+  "action.rotp_extra_dg.aqua_necklace_change_to_liquid": "Convertirse en liquido",
+  "action.rotp_extra_dg.aqua_necklace_change_to_liquid.undo": "Volver a la normalidad",
+  "action.rotp_extra_dg.aqua_necklace_change_to_gaseous": "Convertirse en vapor",
+  "action.rotp_extra_dg.aqua_necklace_change_to_gaseous.undo": "Volver a la normalidad",
+  "action.rotp_extra_dg.aqua_necklace_getting_into_entity": "Meterse en la entidad",
+  "action.rotp_extra_dg.aqua_necklace_leave_the_entity": "Salir de la entidad",
+
   "action.rotp_extra_dg.the_hand_punch": "Puñetazo",
   "action.rotp_extra_dg.the_hand_heavy_punch": "Golpe fuerte",
   "action.rotp_extra_dg.the_hand_kick": "Patada",
@@ -31,8 +46,6 @@
   "rotp_extra_dg.subtitle.the_hand_name": "\"The Hand\"",
   "rotp_extra_dg.subtitle.erasure": "Borrado",
   
-  "entity.jojo.kraft_work": "Kraft Work",
-  "stand.rotp_extra_dg.kraft_work": "Kraft Work",
   "action.rotp_extra_dg.kraft_work_punch": "Puñetazo",
   "action.rotp_extra_dg.kraft_work_heavy_punch": "Golpe fuerte",
   "action.rotp_extra_dg.kraft_work_combo_punch": "Golpe fuerte",
@@ -58,7 +71,6 @@
   "rotp_extra_dg.subtitle.kraft_work_blocks_a_projectile": "Proyectil bloqueado",
   "rotp_extra_dg.subtitle.kraft_work_giving_kinetic_energy": "Algo esta siendo tocado",
 
-  "entity.jojo.stone_free": "Stone Free",
   "entity.rotp_extra_dg.sf_string": "Hilo de Stone Free",
   "entity.rotp_extra_dg.sfu_string": "Hilo de Stone Free",
   "entity.rotp_extra_dg.sfu_string_sweep": "Hilo de Stone Free",
@@ -68,7 +80,6 @@
   "entity.rotp_extra_dg.sf_grappling_string": "Hilo de agarre de Stone Free",
   "entity.rotp_extra_dg.sfu_grappling_string": "Hilo de agarre Stone Free",
   "entity.rotp_extra_dg.sfu_barrier": "Barrera de Stone Free",
-  "stand.rotp_extra_dg.stone_free": "Stone Free",
   "action.rotp_extra_dg.stone_free_punch": "Puñetazo",
   "action.rotp_extra_dg.stone_free_user_string_attack": "Ataque con hilo",
   "action.rotp_extra_dg.stone_free_barrage": "Bombardeo de puñetazos",
