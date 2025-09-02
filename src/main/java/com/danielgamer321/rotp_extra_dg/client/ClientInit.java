@@ -9,9 +9,13 @@ import com.danielgamer321.rotp_extra_dg.client.render.entity.renderer.stand.*;
 import com.danielgamer321.rotp_extra_dg.client.ui.marker.StoneFreeBarrierDetectionMarker;
 import com.danielgamer321.rotp_extra_dg.init.AddonStands;
 import com.danielgamer321.rotp_extra_dg.init.InitEntities;
+import com.danielgamer321.rotp_extra_dg.init.InitStands;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
 import com.github.standobyte.jojo.client.ui.marker.MarkerRenderer;
 
+import com.github.standobyte.jojo.client.ui.standstats.StandStatsRenderer;
+import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
@@ -44,6 +48,7 @@ public class ClientInit {
         RenderingRegistry.registerEntityRenderingHandler(InitEntities.SFU_GRAPPLING_STRING.get(), SFUGrapplingStringRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(InitEntities.SFU_BARRIER.get(), SFUBarrierRenderer::new);
 
+        RenderingRegistry.registerEntityRenderingHandler(AddonStands.AQUA_NECKLACE.getEntityType(), AquaNecklaceRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AddonStands.THE_HAND.getEntityType(), TheHandRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AddonStands.KRAFT_WORK.getEntityType(), KraftWorkRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AddonStands.STONE_FREE.getEntityType(), StoneFreeRenderer::new);

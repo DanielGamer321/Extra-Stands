@@ -10,15 +10,12 @@ import com.danielgamer321.rotp_extra_dg.init.InitEffects;
 import com.danielgamer321.rotp_extra_dg.init.InitStands;
 import com.danielgamer321.rotp_extra_dg.power.impl.stand.type.KraftWorkStandType;
 import com.danielgamer321.rotp_extra_dg.power.impl.stand.type.StoneFreeStandType;
-import com.github.standobyte.jojo.entity.damaging.DamagingEntity;
-import com.github.standobyte.jojo.entity.damaging.projectile.ModdedProjectileEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.BladeHatEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.StandArrowEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.util.mc.MCUtil;
-import com.github.standobyte.jojo.util.mc.damage.*;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.Entity;
@@ -60,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.danielgamer321.rotp_extra_dg.action.stand.KraftWorkLockYourself.binding;
-import static com.danielgamer321.rotp_extra_dg.action.stand.KraftWorkPlaceProjectile.placeProjectile;
 
 @EventBusSubscriber(modid = RotpExtraAddon.MOD_ID)
 public class GameplayEventHandler {
@@ -74,7 +70,7 @@ public class GameplayEventHandler {
                 releaseFromLock(entity);
             }
         });
-        if (entity instanceof CreeperEntity && ((CreeperEntity) entity).getSwellDir() >= 1 && InitEffects.isLocked(entity)) {
+        if (entity instanceof CreeperEntity && ((CreeperEntity) entity).getSwellDir() > 0 && InitEffects.isLocked(entity)) {
             entity.removeEffect(InitEffects.LOCKED_MAIN_HAND.get());
             entity.removeEffect(InitEffects.LOCKED_OFF_HAND.get());
             entity.removeEffect(InitEffects.LOCKED_HELMET.get());
@@ -95,6 +91,21 @@ public class GameplayEventHandler {
                     player.setSprinting(false);
                 }
                 break;
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingHeal(LivingHealEvent event) {
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        float heal = event.getAmount();
+        float erased = entity.getCapability(EntityUtilCapProvider.CAPABILITY).map(cap -> cap.getErased()).orElse(0F);
+        if (entity.hasEffect(InitEffects.ERASED.get())) {
+            if (entity.getHealth() >= entity.getMaxHealth() - erased) {
+                event.setCanceled(true);
+            }
+            else if (entity.getHealth() + heal > entity.getMaxHealth() - erased) {
+                event.setAmount(heal - ((entity.getHealth() + heal) - (entity.getMaxHealth() - erased)));
+            }
         }
     }
 
@@ -148,7 +159,7 @@ public class GameplayEventHandler {
         if (event.getOutcome() instanceof MobEntity) {
             LivingEntity pre = event.getEntityLiving();
             MobEntity converted = (MobEntity) event.getOutcome();
-            if (converted.isNoAi() && InitEffects.lockIA(pre) && !InitEffects.lockIA(converted)) {
+            if (converted.isNoAi() && InitEffects.IADisabled(pre) && !InitEffects.IADisabled(converted)) {
                 converted.setNoAi(false);
             }
         }
@@ -193,8 +204,9 @@ public class GameplayEventHandler {
                         ProjectileEntity projectile = (ProjectileEntity) entity;
                         int kineticEnergy = projectile.getCapability(ProjectileUtilCapProvider.CAPABILITY).map(cap -> cap.getKineticEnergy()).orElse(0);
                         Vector3d velocity = projectile instanceof FireworkRocketEntity ?
-                                projectile.getDeltaMovement().normalize().add(user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)3.15F + (0.143F * kineticEnergy)) :
-                                projectile.getDeltaMovement().normalize().add(user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)0.143F * kineticEnergy);
+                                projectile.getDeltaMovement().normalize().add(user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)3.15F) :
+                                projectile.getDeltaMovement().normalize().add(user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F, user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F,
+                                        user.level.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)Math.min((0.143F * kineticEnergy), 3.15F));
                         KraftWorkStandType.ReleaseProjectile(user, projectile, kineticEnergy, velocity);
                         projectile.setNoGravity(false);
                     }
@@ -265,8 +277,7 @@ public class GameplayEventHandler {
                         stand.hasPower() && stand.getType() == AddonStands.KRAFT_WORK.getStandType()).orElse(false) && ((KraftWorkStandType<?>) power.getType()).getStatus(power)
                         && InitStands.KRAFT_WORK_BI_STATUS.get().isUnlocked(power)) {
                     if (!dmgSource.isBypassArmor() && !(entity instanceof StandEntity)) {
-                        event.setAmount(((KraftWorkStandType<?>) power.getType()).KWReduceDamageAmount(
-                                power, power.getUser(), dmgSource, event.getAmount()));
+                        event.setAmount(((KraftWorkStandType<?>) power.getType()).KWReduceDamageAmount(power, event.getAmount()));
                         power.consumeStamina(30F);
                     }
                     if (dmgSource.isProjectile()) {
@@ -305,33 +316,15 @@ public class GameplayEventHandler {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingDamage(LivingDamageEvent event) {
+        LivingEntity target = event.getEntityLiving();
+        target.removeEffect(InitEffects.SURPRISE.get());
+    }
+
     private static boolean isMelee(DamageSource dmgSource) {
         return !dmgSource.isExplosion() && !dmgSource.isFire() && !dmgSource.isMagic() &&
                 !dmgSource.isProjectile();
-    }
-
-    private static boolean AttackedByHisStand(Entity directEntity, LivingEntity standUser) {
-        if (directEntity instanceof StandEntity && ((StandEntity)directEntity).getUser() == standUser) {
-            return true;
-        }
-        else if (directEntity instanceof DamagingEntity && ((DamagingEntity)directEntity).getOwner().isAlive()){
-            LivingEntity owner = ((DamagingEntity)directEntity).getOwner();
-            return owner instanceof StandEntity && ((StandEntity) owner).getUser() == standUser;
-        }
-        return false;
-    }
-
-    private static void AttackedByHisStand(Entity directEntity, LivingEntity standUser, float amount) {
-        if (directEntity instanceof StandEntity && ((StandEntity)directEntity).getUser() == standUser) {
-            DamageUtil.hurtThroughInvulTicks(standUser, new StandEntityDamageSource("stand", directEntity, IStandPower.getStandPowerOptional(standUser).orElse(null)), amount);
-        }
-        else if (directEntity instanceof DamagingEntity && ((DamagingEntity)directEntity).getOwner().isAlive()){
-            LivingEntity owner = ((DamagingEntity)directEntity).getOwner();
-            if (owner instanceof StandEntity && ((StandEntity) owner).getUser() == standUser) {
-                ModdedProjectileEntity modded = ((ModdedProjectileEntity) directEntity);
-                DamageUtil.hurtThroughInvulTicks(standUser, new IndirectStandEntityDamageSource("arrow", ((DamagingEntity)directEntity), owner).setProjectile(), amount);
-            }
-        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
