@@ -12,6 +12,7 @@ public class ProjectileUtilCap {
     private final Entity projectile;
     private int accumulation;
     private int plFlightTicks;
+    private boolean confirmation;
     private boolean readyToRelease;
     
     public ProjectileUtilCap(Entity entity) {
@@ -54,6 +55,14 @@ public class ProjectileUtilCap {
         return plFlightTicks;
     }
 
+    public void setConfirmation(boolean ok) {
+        this.confirmation = ok;
+    }
+
+    public boolean getConfirmation() {
+        return confirmation;
+    }
+
     public void setReadyToRelease(boolean ready) {
         this.readyToRelease = ready;
     }
@@ -72,6 +81,7 @@ public class ProjectileUtilCap {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putInt("KineticEnergy", accumulation);
         nbt.putInt("PLFlightTicks", plFlightTicks);
+        nbt.putBoolean("Confirmation", confirmation);
         nbt.putBoolean("ReadyToRelease", readyToRelease);
         return nbt;
     }
@@ -79,6 +89,7 @@ public class ProjectileUtilCap {
     public void fromNBT(CompoundNBT nbt) {
         this.accumulation = nbt.getInt("KineticEnergy");
         this.plFlightTicks = nbt.getInt("PLFlightTicks");
+        this.confirmation = nbt.getBoolean("Confirmation");
         this.readyToRelease = nbt.getBoolean("ReadyToRelease");
     }
 }

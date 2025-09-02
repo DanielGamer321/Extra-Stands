@@ -3,15 +3,18 @@ package com.danielgamer321.rotp_extra_dg.action.stand;
 import com.danielgamer321.rotp_extra_dg.entity.damaging.projectile.KWItemEntity;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
+import com.github.standobyte.jojo.action.player.ContinuousActionInstance;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.entity.damaging.projectile.TommyGunBulletEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.MolotovEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.BladeHatEntity;
+import com.github.standobyte.jojo.entity.itemprojectile.ClackersEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.KnifeEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModItems;
 import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
+import com.github.standobyte.jojo.item.ClackersItem;
 import com.github.standobyte.jojo.item.KnifeItem;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.general.LazySupplier;
@@ -20,6 +23,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -36,9 +40,9 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.danielgamer321.rotp_extra_dg.power.impl.stand.type.KraftWorkStandType.*;
@@ -72,10 +76,12 @@ public class KraftWorkPlaceProjectile extends StandAction {
 
     public static boolean projectileList(ItemStack item, LivingEntity user) {
         ItemStack mainItem = user.getMainHandItem();
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(item);
         return
                 item.getItem() instanceof ArrowItem ||
                 item.getItem() instanceof ThrowablePotionItem ||
                 item.getItem() instanceof KnifeItem ||
+                (item.getItem() instanceof ClackersItem && enchantments.isEmpty()) ||
                 (item.getItem() == ModItems.MOLOTOV.get() && mainItem.getItem() == Items.FLINT_AND_STEEL) ||
                 item.getItem() == ModItems.BLADE_HAT.get() ||
                 item.getItem() == Items.TRIDENT ||
@@ -228,6 +234,7 @@ public class KraftWorkPlaceProjectile extends StandAction {
                 proItem instanceof ShootableItem ||
                 proItem instanceof ArmorItem ||
                 proItem instanceof HorseArmorItem ||
+                proItem instanceof ClackersItem ||
                 (proItem.getUseDuration(item) > 0 &&
                 !(proItem instanceof PotionItem) &&
                 !proItem.isEdible());
@@ -430,6 +437,16 @@ public class KraftWorkPlaceProjectile extends StandAction {
                     ((PlayerEntity)itemOwner).getCooldowns().addCooldown(proItem, 10);
                 }
             }
+            if (proItem instanceof ClackersItem) {
+                ClackersEntity clackers = new ClackersEntity(world, itemOwner);
+                clackers.shootFromRotation(itemOwner, 1.5F, 1.0F);
+                clackers.setBaseDamage(clackers.getBaseDamage() / 6);
+                clackers.setOwner(user);
+                TagServerSide(clackers, lock_id, true);
+                world.addFreshEntity(clackers);
+                setCanUpdateServerSide(clackers, false);
+                setPositionLockingServerSide(clackers, true);
+            }
             if (proItem == Items.FIREWORK_ROCKET) {
                 FireworkRocketEntity firework = new FireworkRocketEntity(world, item, itemOwner, itemOwner.getX(), itemOwner.getEyeY() - (double)0.15F, itemOwner.getZ(), true);
                 firework.setPos(firework.getX() + userView.x * 0.5D, itemOwner.getY(0.5D) + 0.5D, firework.getZ() + userView.z * 0.5D);
@@ -589,6 +606,11 @@ public class KraftWorkPlaceProjectile extends StandAction {
         if (!(itemOwner instanceof PlayerEntity && ((PlayerEntity)itemOwner).abilities.instabuild)) {
             item.shrink(itemsToThrow);
         }
+    }
+
+    @Override
+    protected boolean canBeUsedDuringPlayerAction(ContinuousActionInstance<?, ?> curPlayerAction) {
+        return false;
     }
 
     @Override

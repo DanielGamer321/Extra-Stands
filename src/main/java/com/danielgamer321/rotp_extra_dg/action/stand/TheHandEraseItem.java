@@ -1,6 +1,7 @@
 package com.danielgamer321.rotp_extra_dg.action.stand;
 
 import com.danielgamer321.rotp_extra_dg.entity.stand.stands.TheHandEntity;
+import com.danielgamer321.rotp_extra_dg.init.InitStands;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
@@ -10,6 +11,7 @@ import com.github.standobyte.jojo.entity.stand.StandPose;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
@@ -17,7 +19,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class TheHandEraseItem extends StandEntityAction {
-    public static final StandPose ERASE_ITEM_POSE = new StandPose("ERASE_ITEM");
+    public static final StandPose ERASE_ITEM_POSE = new StandPose("eraseItem");
 
     public TheHandEraseItem(Builder builder) {
         super(builder);
@@ -25,6 +27,9 @@ public class TheHandEraseItem extends StandEntityAction {
 
     @Override
     protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target) {
+        if (!(user instanceof PlayerEntity)) {
+            return ActionConditionResult.NEGATIVE;
+        }
         ItemStack itemToErase = user.getOffhandItem();
         if (itemToErase.getItem() == Items.BEDROCK || itemToErase.getItem() == Items.BARRIER) {
             return conditionMessage("not_possible_erase_article");
@@ -50,7 +55,7 @@ public class TheHandEraseItem extends StandEntityAction {
             if (!world.isClientSide()) {
                 ItemStack itemToErase = itemToErase(user);
                 if (!itemToErase.isEmpty()) {
-                    user.getOffhandItem().shrink(1);
+                    itemToErase.shrink(Math.min(itemToErase.getCount(), InitStands.THE_HAND_ERASURE_BARRAGE.get().isUnlocked(userPower) ? 4 : 2));
                 }
             }
         }

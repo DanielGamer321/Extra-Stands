@@ -1,5 +1,6 @@
 package com.danielgamer321.rotp_extra_dg.power.impl.stand.type;
 
+import com.danielgamer321.rotp_extra_dg.action.stand.KraftWorkPlaceProjectile;
 import com.danielgamer321.rotp_extra_dg.capability.entity.EntityUtilCapProvider;
 import com.danielgamer321.rotp_extra_dg.capability.entity.LivingUtilCapProvider;
 import com.danielgamer321.rotp_extra_dg.capability.entity.ProjectileUtilCapProvider;
@@ -13,6 +14,7 @@ import com.danielgamer321.rotp_extra_dg.network.packets.fromserver.TrSetEntityCa
 import com.danielgamer321.rotp_extra_dg.network.packets.fromserver.TrSetLockStatusPacket;
 import com.danielgamer321.rotp_extra_dg.network.packets.fromserver.TrTagPacket;
 import com.github.standobyte.jojo.action.stand.StandAction;
+import com.github.standobyte.jojo.entity.damaging.projectile.CDBlockBulletEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.TommyGunBulletEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.BladeHatEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.KnifeEntity;
@@ -22,17 +24,17 @@ import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -76,7 +78,7 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
                     boolean positionLocking = entity.getCapability(EntityUtilCapProvider.CAPABILITY).map(cap -> cap.getPositionLocking()).orElse(false);
                     if (entity instanceof LivingEntity && !(entity instanceof ArmorStandEntity)) {
                         LivingEntity lockedEntity = (LivingEntity) entity;
-                        if (!positionLocking || distance > 150 || !lockedEntity.isAlive() || !InitEffects.isLocked(lockedEntity)) {
+                        if (!positionLocking || distance > 225 || !lockedEntity.isAlive() || !InitEffects.isLocked(lockedEntity)) {
                             ItemStack helmet = lockedEntity.getItemBySlot(EquipmentSlotType.HEAD);
                             ItemStack chestplace = lockedEntity.getItemBySlot(EquipmentSlotType.CHEST);
                             ItemStack leggings = lockedEntity.getItemBySlot(EquipmentSlotType.LEGS);
@@ -102,9 +104,10 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
                         int kineticEnergy = entity.getCapability(ProjectileUtilCapProvider.CAPABILITY).map(cap -> cap.getKineticEnergy()).orElse(0);
                         int flightTicks = projectile.getCapability(ProjectileUtilCapProvider.CAPABILITY).map(cap -> cap.getFlightTicks()).orElse(0);
                         Vector3d velocity = projectile instanceof FireworkRocketEntity ?
-                                projectile.getDeltaMovement().normalize().add(world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)3.15F + (0.143F * kineticEnergy)) :
-                                projectile.getDeltaMovement().normalize().add(world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)0.143F * kineticEnergy);
-                        if (positionLocking && distance <= 150) {
+                                projectile.getDeltaMovement().normalize().add(world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)3.15F) :
+                                projectile.getDeltaMovement().normalize().add(world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F,
+                                world.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)Math.min((0.143F * kineticEnergy), 3.15F));
+                        if (positionLocking && distance <= 225) {
                             if (projectile.canUpdate()) {
                                 setCanUpdateServerSide(projectile, false);
                             }
@@ -123,12 +126,12 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
                         }
                     }
                     else {
-                        if (positionLocking && distance <= 150) {
+                        if (positionLocking && distance <= 225) {
                             entity.fallDistance = 0.0F;
                             setCanUpdateServerSide(entity, false);
                             entity.setNoGravity(true);
                         }
-                        else if (!positionLocking || distance > 150 || !user.isAlive()) {
+                        else if (!positionLocking || distance > 225 || !user.isAlive()) {
                             setPositionLockingServerSide(entity, false);
                             setCanUpdateServerSide(entity, true);
                             entity.setNoGravity(false);
@@ -142,7 +145,7 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
                                 IStandPower.getStandPowerOptional(living).ifPresent(userPower -> {
                                     if (IStandPower.getStandPowerOptional(living).map(stand -> !stand.hasPower() ||
                                             stand.getType() != AddonStands.KRAFT_WORK.getStandType()).orElse(false)) {
-                                        if (positionLocking && distance <= 150) {
+                                        if (positionLocking && distance <= 225) {
                                             if (!living.hasEffect(InitEffects.TRANSPORT_LOCKED.get())) {
                                                 living.addEffect(new EffectInstance(InitEffects.TRANSPORT_LOCKED.get(), 19999980, 0, false, false, true));
                                             }
@@ -190,15 +193,28 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
 
     public static void ReleaseProjectile(LivingEntity user, ProjectileEntity projectile, int accumulation, Vector3d velocity) {
         World world = projectile.level;
-        if (projectile instanceof TommyGunBulletEntity) {
+        if (projectile instanceof TommyGunBulletEntity || projectile instanceof CDBlockBulletEntity) {
             replaceProjectile(user, projectile, accumulation);
             projectile.remove();
         }
-        int f = 0;
-        if (projectile instanceof ProjectileItemEntity || projectile instanceof FireworkRocketEntity) {
-            velocity = accumulation > 22 ? projectile.getDeltaMovement().normalize().add(world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F, world.random.nextGaussian() * (double)0.0075F * (double)0.0F).scale((double)3.15F) : velocity;
+        if (projectile instanceof AbstractArrowEntity) {
+            double increase = 0.0091 * accumulation;
+            if (projectile instanceof KWItemEntity) {
+                ItemStack item = ((KWItemEntity) projectile).getItem();
+                if (item.getItem() instanceof BlockItem) {
+                    BlockState blockState = ((BlockItem) item.getItem()).getBlock().defaultBlockState();
+                    increase = KraftWorkPlaceProjectile.ineffectiveMaterial(blockState) || KraftWorkPlaceProjectile.ineffectiveItems(item.getItem()) ? increase / 2 :
+                            KraftWorkPlaceProjectile.weakMaterial(blockState) && !KraftWorkPlaceProjectile.hardMaterial(blockState) &&
+                                    !KraftWorkPlaceProjectile.ineffectiveMaterial(blockState) && !KraftWorkPlaceProjectile.ineffectiveItems(item.getItem()) ? 0 : increase;
+                }
+                else {
+                    increase = KraftWorkPlaceProjectile.ineffectiveItems(item.getItem()) ? increase / 2 : KraftWorkPlaceProjectile.weakItems(item.getItem()) ? 0 : increase;
+                }
+            }
+            ((AbstractArrowEntity) projectile).setBaseDamage(((AbstractArrowEntity) projectile).getBaseDamage() + increase);
         }
 
+        int f;
         if (projectile instanceof BladeHatEntity && accumulation > 3){
             f = accumulation > 5 ? 1 : accumulation / 5;
             world.playSound(null, projectile, ModSounds.BLADE_HAT_THROW.get(), SoundCategory.PLAYERS,
@@ -231,22 +247,30 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
     }
 
     public static void replaceProjectile(LivingEntity user, Entity projectile, int kineticEnergy) {
-//        if (projectile instanceof CDBlockBulletEntity) {
-//                                    LivingEntity owner = oldProjectile.getOwner();
-//                                    CDBlockBulletEntity bullet = new CDBlockBulletEntity(user, user.level);
-//        }
-//        else if (projectile instanceof TommyGunBulletEntity) {
-        if (projectile instanceof TommyGunBulletEntity) {
-            TommyGunBulletEntity newProjectile = new TommyGunBulletEntity(user, projectile.level) {
+        int KineticEnergy = projectile.getCapability(ProjectileUtilCapProvider.CAPABILITY).map(capa -> capa.getKineticEnergy()).orElse(0);
+        if (projectile instanceof CDBlockBulletEntity) {
+            CDBlockBulletEntity newBullet = new CDBlockBulletEntity(user, user.level) {
                 @Override
                 public float getBaseDamage() {
                     return 0.05F * kineticEnergy;
                 }
             };
-            newProjectile.getCapability(ProjectileUtilCapProvider.CAPABILITY).ifPresent(cap -> cap.setKineticEnergy(projectile.getCapability(ProjectileUtilCapProvider.CAPABILITY).map(capa -> capa.getKineticEnergy()).orElse(0)));
-            newProjectile.copyPosition(projectile);
-            newProjectile.shootFromRotation(projectile, 0.143F * kineticEnergy, 0.0F);
-            projectile.level.addFreshEntity(newProjectile);
+            newBullet.getCapability(ProjectileUtilCapProvider.CAPABILITY).ifPresent(cap -> cap.setKineticEnergy(KineticEnergy));
+            newBullet.copyPosition(projectile);
+            newBullet.shootFromRotation(projectile, Math.min((0.143F * kineticEnergy), 3.15F), 0.0F);
+            projectile.level.addFreshEntity(newBullet);
+        }
+        else if (projectile instanceof TommyGunBulletEntity) {
+            TommyGunBulletEntity newBullet = new TommyGunBulletEntity(user, projectile.level) {
+                @Override
+                public float getBaseDamage() {
+                    return 0.05F * kineticEnergy;
+                }
+            };
+            newBullet.getCapability(ProjectileUtilCapProvider.CAPABILITY).ifPresent(cap -> cap.setKineticEnergy(KineticEnergy));
+            newBullet.copyPosition(projectile);
+            newBullet.shootFromRotation(projectile, Math.min((0.143F * kineticEnergy), 3.15F), 0.0F);
+            projectile.level.addFreshEntity(newBullet);
         }
     }
 
@@ -260,18 +284,12 @@ public class KraftWorkStandType<T extends StandStats> extends EntityStandType<T>
         return new Vector3d((double)(f3 * f4), (double)(-f5), (double)(f2 * f4));
     }
 
-    public float KWReduceDamageAmount(IStandPower power, LivingEntity user,
-                                      DamageSource dmgSource, float dmgAmount) {
+    public float KWReduceDamageAmount(IStandPower power, float dmgAmount) {
         float damageReductionMult = 0.2F * (InitStands.KRAFT_WORK_BI_STATUS.get()
                 .getMaxTrainingPoints(power) >= 1 ? power.getResolveLevel() : power.getResolveLevel() - 1);
 
         if (damageReductionMult > 0 && getStatus(power)) {
             float damageReduced = dmgAmount * damageReductionMult;
-
-            Entity sourceEntity = dmgSource.getDirectEntity();
-            Vector3d sourcePos = sourceEntity.getEyePosition(1.0F);
-            AxisAlignedBB userHitbox = user.getBoundingBox();
-            Vector3d damagePos;
             return dmgAmount - damageReduced;
         }
         else {

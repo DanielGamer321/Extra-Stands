@@ -40,7 +40,7 @@ public class StoneFreeStandType<T extends StandStats> extends EntityStandType<T>
     @Override
     public float getStaminaRegen(IStandPower power) {
         LivingEntity user = power.getUser();
-        if (!user.getCapability(LivingUtilCapProvider.CAPABILITY).map(cap -> cap.userString(user)).orElse(false)) {
+        if (!user.getCapability(LivingUtilCapProvider.CAPABILITY).map(cap -> cap.userString(power.getUser())).orElse(false)) {
             return 0;
         }
         else {

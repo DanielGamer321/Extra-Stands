@@ -38,6 +38,7 @@ public class PacketManager {
                 .networkProtocolVersion(() -> PROTOCOL_VERSION)
                 .simpleChannel();
 
+        registerMessage(channel, new TrErasedPacket.Handler(),          Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         registerMessage(channel, new TrTagPacket.Handler(),          Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         registerMessage(channel, new TrKineticEnergyPacket.Handler(),          Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         registerMessage(channel, new TrFlightTicksPacket.Handler(),          Optional.of(NetworkDirection.PLAY_TO_CLIENT));

@@ -15,6 +15,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class InitSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, RotpExtraAddon.MOD_ID);
 
+    static final OstSoundList AQUA_NECKLACE_OST = new OstSoundList(new ResourceLocation(RotpExtraAddon.MOD_ID, "aqua_necklace_ost"), SOUNDS);
+
     public static final RegistryObject<SoundEvent> OKUYASU_THE_HAND = SOUNDS.register("okuyasu_the_hand",
             () -> new SoundEvent(new ResourceLocation(RotpExtraAddon.MOD_ID, "okuyasu_the_hand")));
 

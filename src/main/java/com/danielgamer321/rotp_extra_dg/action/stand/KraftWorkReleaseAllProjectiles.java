@@ -31,7 +31,7 @@ public class KraftWorkReleaseAllProjectiles extends StandAction {
     @Override
     protected void perform(World world, LivingEntity user, IStandPower power, ActionTarget target) {
         String lock_id = String.valueOf(user.getUUID());
-        world.getEntitiesOfClass(Entity.class, user.getBoundingBox().inflate(13),
+        world.getEntitiesOfClass(Entity.class, user.getBoundingBox().inflate(15),
                 entity -> entity.getTags().contains(lock_id)).forEach(entity -> {
             boolean PositionLocking = entity.getCapability(EntityUtilCapProvider.CAPABILITY).map(cap -> cap.getPositionLocking()).orElse(false);
             if ((entity instanceof ProjectileEntity || entity instanceof EyeOfEnderEntity) && PositionLocking) {

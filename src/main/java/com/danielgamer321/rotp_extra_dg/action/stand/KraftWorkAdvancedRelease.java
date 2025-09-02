@@ -9,7 +9,6 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
 
 public class KraftWorkAdvancedRelease extends StandAction {
     public KraftWorkAdvancedRelease(Builder builder) {
@@ -34,9 +33,8 @@ public class KraftWorkAdvancedRelease extends StandAction {
     }
 
     @Override
-    protected void perform(World world, LivingEntity user, IStandPower power, ActionTarget target) {
-        if (world.isClientSide()) {
-            ClientUtil.openAdvancedReleaseUi();
-        }
+    public boolean clientOnly() {
+        ClientUtil.openAdvancedReleaseUi();
+        return false;
     }
 }

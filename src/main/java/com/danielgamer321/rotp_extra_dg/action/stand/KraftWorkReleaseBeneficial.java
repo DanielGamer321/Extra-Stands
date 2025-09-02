@@ -37,7 +37,7 @@ public class KraftWorkReleaseBeneficial extends StandAction {
     @Override
     protected void perform(World world, LivingEntity user, IStandPower power, ActionTarget target) {
         String lock_id = String.valueOf(user.getUUID());
-        world.getEntitiesOfClass(ProjectileEntity.class, user.getBoundingBox().inflate(13),
+        world.getEntitiesOfClass(ProjectileEntity.class, user.getBoundingBox().inflate(15),
                 entity -> entity.getTags().contains(lock_id)).forEach(projectile -> {
             boolean PositionLocking = projectile.getCapability(EntityUtilCapProvider.CAPABILITY).map(cap -> cap.getPositionLocking()).orElse(false);
             if (PositionLocking && BeneficialItems(projectile)) {

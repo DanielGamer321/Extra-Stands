@@ -9,6 +9,9 @@ import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 
 public class AddonStands {
 
+    public static final EntityStandSupplier<EntityStandType<StandStats>, StandEntityType<AquaNecklaceEntity>>
+    AQUA_NECKLACE = new EntityStandSupplier<>(InitStands.STAND_AQUA_NECKLACE);
+
     public static final EntityStandSupplier<EntityStandType<StandStats>, StandEntityType<TheHandEntity>>
     THE_HAND = new EntityStandSupplier<>(InitStands.STAND_THE_HAND);
 
