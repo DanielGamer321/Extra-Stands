@@ -1,0 +1,158 @@
+{
+  "rotp_extra_dg:aqua_necklace": {
+    "use_by_resolve": {
+      "0lvl": ["basic_combo"],
+      "1lvl": ["basic_combo"],
+      "2lvl": ["basic_combo"],
+      "3lvl": ["basic_combo"],
+      "4lvl": ["basic_combo"]
+    },
+    "block": "rotp_extra_dg:aqua_necklace_block",
+    "basic_combo": [
+      { "action": "rotp_extra_dg:aqua_necklace_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:aqua_necklace_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:aqua_necklace_punch", "distance": "<=4" }
+    ]
+  },
+  "rotp_extra_dg:the_hand": {
+    "use_by_resolve": {
+      "0lvl": ["heavy_combo", "barrage_combo_v1"],
+      "1lvl": ["heavy_combo", "kick_combo", "barrage_combo_v2"],
+      "2lvl": ["heavy_combo", "kick_combo", "barrage_combo_v2", "erase_combo", "erase_combo_alt"],
+      "3lvl": ["heavy_combo", "kick_combo", "barrage_combo_v2", "erase_combo", "erase_combo_alt"],
+      "4lvl": ["heavy_combo", "kick_combo", "barrage_combo_v2", "barrage_combo_alt", "erase_first", "erase_combo", "erase_combo_alt"]
+    },
+    "block": "rotp_extra_dg:the_hand_block",
+    "heavy_combo": [
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_heavy_punch", "distance": "<=4" }
+    ],
+    "barrage_combo_v1": [
+      { "action": "rotp_extra_dg:the_hand_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_heavy_punch", "distance": "<=4" }
+    ],
+    "kick_combo": [
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_kick", "distance": "<=4" }
+    ],
+    "barrage_combo_v2": [
+      { "action": "rotp_extra_dg:the_hand_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_kick", "distance": "<=4" }
+    ],
+    "erase_combo": [
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_erase", "distance": "<=4" }
+    ],
+    "erase_combo_alt": [
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_erase", "distance": "<=4" }
+    ],
+    "erase_first": [
+      { "action": "rotp_extra_dg:the_hand_erase", "distance": "<6" },
+      { "action": "rotp_extra_dg:the_hand_heavy_punch", "distance": "<=4" }
+    ],
+    "barrage_combo_alt": [
+      { "action": "rotp_extra_dg:the_hand_erasure_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:the_hand_heavy_punch", "distance": "<=4" }
+    ]
+  },
+  "rotp_extra_dg:kraft_work": {
+    "use_by_resolve": {
+      "0lvl": ["basic_combo", "barrage_combo_v1"],
+      "1lvl": ["basic_combo", "basic_combo_alt", "barrage_combo_v2"],
+      "2lvl": ["basic_combo", "basic_combo_alt", "barrage_combo_v2"],
+      "3lvl": ["basic_combo", "basic_combo_alt", "barrage_combo_v2"],
+      "4lvl": ["basic_combo", "basic_combo_alt", "barrage_combo_v2"]
+    },
+    "block": "rotp_extra_dg:kraft_work_block",
+    "basic_combo": [
+      { "action": "rotp_extra_dg:kraft_work_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_heavy_punch", "distance": "<=4" }
+    ],
+    "barrage_combo_v1": [
+      { "action": "rotp_extra_dg:kraft_work_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_heavy_punch", "distance": "<=4" }
+    ],
+    "basic_combo_alt": [
+      { "action": "rotp_extra_dg:kraft_work_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_combo_punch", "distance": "<=4" }
+    ],
+    "barrage_combo_v2": [
+      { "action": "rotp_extra_dg:kraft_work_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:kraft_work_combo_punch", "distance": "<=4" }
+    ]
+  },
+  "rotp_extra_dg:stone_free": {
+    "use_by_resolve": {
+      "0lvl": ["ora_combo", "string_combo", "ora_ora_ora_combo_v1", "sweep_combo"],
+      "1lvl": ["ora_combo", "ora_combo_alt", "string_combo", "ora_ora_ora_combo_v2", "sweep_combo", "binding_combo", "binding_combo_alt"],
+      "2lvl": ["ora_combo", "ora_combo_alt", "string_combo", "ora_ora_ora_combo_v2", "sweep_combo", "binding_combo", "binding_combo_alt"],
+      "3lvl": ["ora_combo", "ora_combo_alt", "string_combo", "ora_ora_ora_combo_v2", "sweep_combo", "binding_combo", "binding_combo_alt", "extended_punch", "extended_punch_alt", "string_pick", "string_pick_alt"],
+      "4lvl": ["ora_combo", "ora_combo_alt", "string_combo", "ora_ora_ora_combo_v2", "sweep_combo", "binding_combo", "binding_combo_alt", "extended_punch", "extended_punch_alt", "string_pick", "string_pick_alt"]
+    },
+    "block": "rotp_extra_dg:stone_free_block",
+    "ora_combo": [
+      { "action": "rotp_extra_dg:stone_free_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_heavy_punch", "distance": "<=4" }
+    ],
+    "string_combo": [
+      { "action": "rotp_extra_dg:stone_free_user_string_attack", "distance": ">4" },
+      { "action": "rotp_extra_dg:stone_free_user_string_attack", "distance": ">4" },
+      { "action": "rotp_extra_dg:stone_free_user_string_whip", "distance": ">4" }
+    ],
+    "ora_ora_ora_combo_v1": [
+      { "action": "rotp_extra_dg:stone_free_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_heavy_punch", "distance": "<=4" }
+    ],
+    "sweep_combo": [
+      { "action": "rotp_extra_dg:stone_free_user_string_sweep", "distance": ">4" },
+      { "action": "rotp_extra_dg:stone_free_user_string_sweep", "distance": ">4" },
+      { "action": "rotp_extra_dg:stone_free_user_string_whip", "distance": ">4" }
+    ],
+    "ora_combo_alt": [
+      { "action": "rotp_extra_dg:stone_free_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_punch", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_string_punch", "distance": "<=4" }
+    ],
+    "ora_ora_ora_combo_v2": [
+      { "action": "rotp_extra_dg:stone_free_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_barrage", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_string_punch", "distance": "<=4" }
+    ],
+    "binding_combo": [
+      { "action": "rotp_extra_dg:stone_free_user_attack_binding", "distance": "<=4" },
+      { "action": "rotp_extra_dg:stone_free_heavy_punch", "distance": "<=4" }
+    ],
+    "binding_combo_alt": [
+      { "action": "rotp_extra_dg:stone_free_attack_binding", "distance": ">4" },
+      { "action": "rotp_extra_dg:stone_free_user_string_whip", "distance": ">4" },
+      { "action": "rotp_extra_dg:stone_free_heavy_punch", "distance": "<=4" }
+    ],
+    "extended_punch": [
+      { "action": "rotp_extra_dg:stone_free_extended_punch", "distance": ">5" }
+    ],
+    "extended_punch_alt": [
+      { "action": "rotp_extra_dg:stone_free_user_attack_binding", "distance": ">5" },
+      { "action": "rotp_extra_dg:stone_free_extended_punch", "distance": ">4" }
+    ],
+    "string_pick": [
+      { "action": "rotp_extra_dg:stone_free_user_string_pick", "distance": ">5" }
+    ],
+    "string_pick_alt": [
+      { "action": "rotp_extra_dg:stone_free_attack_binding", "distance": ">5" },
+      { "action": "rotp_extra_dg:stone_free_user_string_pick", "distance": ">3" },
+      { "action": "rotp_extra_dg:stone_free_heavy_punch", "distance": "<=4" }
+    ]
+  }
+}

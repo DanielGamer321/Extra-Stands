@@ -21,7 +21,7 @@ credits='''
 '''
 authors="DanielGamer321, StandoByte"
 description='''
-An addon for Ripples of the Past mod, adding 3 new Stands.
+An addon for Ripples of the Past mod, adding 4 new Stands.
 '''
 [[dependencies.rotp_extra_dg]]
     modId="forge"
