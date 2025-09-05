@@ -1,12 +1,13 @@
 package com.danielgamer321.rotp_extra_dg.action.stand;
 
 import com.danielgamer321.rotp_extra_dg.entity.damaging.projectile.KWItemEntity;
+import com.danielgamer321.rotp_extra_dg.util.AddonInteractionUtil;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.player.ContinuousActionInstance;
 import com.github.standobyte.jojo.action.stand.StandAction;
-import com.github.standobyte.jojo.entity.damaging.projectile.TommyGunBulletEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.MolotovEntity;
+import com.github.standobyte.jojo.entity.damaging.projectile.TommyGunBulletEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.BladeHatEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.ClackersEntity;
 import com.github.standobyte.jojo.entity.itemprojectile.KnifeEntity;
@@ -34,8 +35,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.item.*;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -63,6 +65,9 @@ public class KraftWorkPlaceProjectile extends StandAction {
         ItemStack itemToShoot = user.getOffhandItem();
         if (itemToShoot == null || itemToShoot.isEmpty()) {
             return conditionMessage("item_offhand");
+        }
+        if (AddonInteractionUtil.isStandItem(itemToShoot)) {
+            return ActionConditionResult.NEGATIVE;
         }
         if (uselessItems(itemToShoot.getItem())) {
             return conditionMessage("useless_item");
@@ -322,6 +327,7 @@ public class KraftWorkPlaceProjectile extends StandAction {
                     if (flightTicks == 0) {
                         knife.setPos(knife.getX() + userView.x * 0.5D, itemOwner.getY(0.5D) + 0.5D, knife.getZ() + userView.z * 0.5D);
                     }
+                    knife.setKnifeType(AddonInteractionUtil.isScalpel(item) ? KnifeEntity.TexVariant.SCALPEL : KnifeEntity.TexVariant.KNIFE);
                     knife.setTimeStopFlightTicks(flightTicks);
                     knife.shootFromRotation(itemOwner, 1.5F, i == 0 ? 1.0F : 16.0F);
                     knife.setBaseDamage(knife.getBaseDamage() / 6);

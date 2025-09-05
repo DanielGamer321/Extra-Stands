@@ -4,6 +4,7 @@ import com.danielgamer321.rotp_extra_dg.capability.entity.EntityUtilCapProvider;
 import com.danielgamer321.rotp_extra_dg.entity.KWBlockEntity;
 import com.danielgamer321.rotp_extra_dg.init.InitEffects;
 import com.danielgamer321.rotp_extra_dg.power.impl.stand.type.KraftWorkStandType;
+import com.danielgamer321.rotp_extra_dg.util.AddonInteractionUtil;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.player.ContinuousActionInstance;
@@ -55,6 +56,9 @@ public class KraftWorkLockTarget extends StandAction {
 
     @Override
     protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target) {
+        if (!(user instanceof PlayerEntity)) {
+            return ActionConditionResult.NEGATIVE;
+        }
         switch (target.getType()) {
         case ENTITY:
             Entity entity = target.getEntity();
@@ -99,9 +103,9 @@ public class KraftWorkLockTarget extends StandAction {
         ItemStack chestplace = target.getItemBySlot(EquipmentSlotType.CHEST);
         ItemStack leggings = target.getItemBySlot(EquipmentSlotType.LEGS);
         ItemStack boots = target.getItemBySlot(EquipmentSlotType.FEET);
-        return !main.isEmpty() || !off.isEmpty() || !helmet.isEmpty() || !chestplace.isEmpty() ||
-                !leggings.isEmpty() || !boots.isEmpty() ||
-                target instanceof ArmorStandEntity ||
+        return !(main.isEmpty() || isStandItem(main)) || !(off.isEmpty() || isStandItem(off)) ||
+                !(helmet.isEmpty() || isStandItem(helmet)) || !chestplace.isEmpty() || !leggings.isEmpty() ||
+                !boots.isEmpty() || target instanceof ArmorStandEntity ||
                 target instanceof RavagerEntity ||
                 (target instanceof LlamaEntity && ((LlamaEntity)target).getSwag() != null) ||
                 target instanceof TraderLlamaEntity ||
@@ -109,6 +113,10 @@ public class KraftWorkLockTarget extends StandAction {
                 (target instanceof StriderEntity && ((StriderEntity)target).isSaddled()) ||
                 (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isSaddled()) ||
                 (target instanceof AbstractChestedHorseEntity && ((AbstractChestedHorseEntity)target).hasChest());
+    }
+
+    private boolean isStandItem(ItemStack stack) {
+        return AddonInteractionUtil.isStandItem(stack);
     }
 
     private boolean TwohandItems(Item item){
@@ -153,16 +161,16 @@ public class KraftWorkLockTarget extends StandAction {
                                 cost = cost + 1;
                             }
                             else {
-                                if (!main.isEmpty()) {
+                                if (!main.isEmpty() && !isStandItem(main)) {
                                     living.addEffect(new EffectInstance(InitEffects.LOCKED_MAIN_HAND.get(), 19999980, 0, false, false, true));
                                     cost = cost + 1;
                                 }
-                                if (!off.isEmpty()) {
+                                if (!off.isEmpty() && !isStandItem(off)) {
                                     living.addEffect(new EffectInstance(InitEffects.LOCKED_OFF_HAND.get(), 19999980, 0, false, false, true));
                                     cost = cost + 1;
                                 }
                             }
-                            if (!helmet.isEmpty()) {
+                            if (!helmet.isEmpty() && !isStandItem(helmet)) {
                                 binding(user, false, helmet);
                                 living.addEffect(new EffectInstance(InitEffects.LOCKED_HELMET.get(), 19999980, 0, false, false, true));
                                 cost = cost + 1;
